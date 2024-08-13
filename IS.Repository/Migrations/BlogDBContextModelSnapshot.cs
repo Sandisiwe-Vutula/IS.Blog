@@ -38,7 +38,12 @@ namespace IS.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PostID")
+                        .HasColumnType("int");
+
                     b.HasKey("CategoryID");
+
+                    b.HasIndex("PostID");
 
                     b.ToTable("Categories");
                 });
@@ -58,6 +63,18 @@ namespace IS.Repository.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Dislikes")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Likes")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LiveVideoID")
+                        .HasColumnType("int");
+
                     b.Property<int>("PostID")
                         .HasColumnType("int");
 
@@ -65,6 +82,8 @@ namespace IS.Repository.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("CommentID");
+
+                    b.HasIndex("LiveVideoID");
 
                     b.HasIndex("PostID");
 
@@ -78,6 +97,12 @@ namespace IS.Repository.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FollowerID"), 1L, 1);
+
+                    b.Property<DateTime>("FollowedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("bit");
 
                     b.Property<int>("UserID")
                         .HasColumnType("int");
@@ -109,14 +134,24 @@ namespace IS.Repository.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsLive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("StreamUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ViewersCount")
                         .HasColumnType("int");
 
                     b.HasKey("LiveVideoID");
@@ -141,6 +176,9 @@ namespace IS.Repository.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Likes")
                         .HasColumnType("int");
 
@@ -152,6 +190,9 @@ namespace IS.Repository.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ViewCount")
                         .HasColumnType("int");
 
                     b.HasKey("PostID");
@@ -182,6 +223,25 @@ namespace IS.Repository.Migrations
                     b.HasIndex("PostID");
 
                     b.ToTable("PostCategories");
+                });
+
+            modelBuilder.Entity("IS.Domain.Models.Request", b =>
+                {
+                    b.Property<int>("RequestID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestID"), 1L, 1);
+
+                    b.Property<bool>("IsAccepted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("RequestID");
+
+                    b.ToTable("Requests");
                 });
 
             modelBuilder.Entity("IS.Domain.Models.Settings", b =>
@@ -224,8 +284,15 @@ namespace IS.Repository.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Bio")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -236,11 +303,29 @@ namespace IS.Repository.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsOnline")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastLoginTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(max)");
@@ -261,6 +346,10 @@ namespace IS.Repository.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfilePicture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -274,15 +363,30 @@ namespace IS.Repository.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Website")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserID");
 
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("IS.Domain.Models.Category", b =>
+                {
+                    b.HasOne("IS.Domain.Models.Post", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("PostID");
+                });
+
             modelBuilder.Entity("IS.Domain.Models.Comment", b =>
                 {
+                    b.HasOne("IS.Domain.Models.LiveVideo", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("LiveVideoID");
+
                     b.HasOne("IS.Domain.Models.Post", "Post")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("PostID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -355,6 +459,18 @@ namespace IS.Repository.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("IS.Domain.Models.LiveVideo", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("IS.Domain.Models.Post", b =>
+                {
+                    b.Navigation("Categories");
+
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("IS.Domain.Models.User", b =>

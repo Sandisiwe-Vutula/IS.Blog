@@ -22,7 +22,7 @@ namespace IS.Repository
         public DbSet<Settings> Settings { get; set; }
         public DbSet<LiveVideo> LiveVideos { get; set; }
         public DbSet<Followers> Followers { get; set; }
-        public DbSet<Reply> Replies { get; set; }
+        //public DbSet<Reply> Replies { get; set; }
         public DbSet<Request> Requests { get; set; }
 
 

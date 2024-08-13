@@ -10,7 +10,6 @@ namespace IS.Domain.Models
     {
         public int ReplyID { get; set; }
         public int CommentID { get; set; } // The ID of the comment this reply is associated with
-        public int UserID { get; set; } // The ID of the user who created the reply
         public string Content { get; set; }=string.Empty;
         public DateTime CreatedDate { get; set; } // The date and time the reply was created
         public DateTime? UpdatedDate { get; set; } // The date and time the reply was last updated (nullable for replies that haven't been edited)
@@ -18,9 +17,7 @@ namespace IS.Domain.Models
         public int Likes { get; set; } // Number of likes received for the reply
         public int Dislikes { get; set; } // Number of dislikes received for the reply
         public bool IsDeleted { get; set; } // Indicates whether the reply has been deleted (soft deleted)
-        public Comment Comment { get; set; } // The comment this reply is associated with
-        public User User { get; set; } // The user who created the reply
-        public ICollection<Reply> ChildReplies { get; set; } // Collection of child replies for nested reply threads
+        //public Comment Comment { get; set; } // The comment this reply is associated with
     }
 
 }

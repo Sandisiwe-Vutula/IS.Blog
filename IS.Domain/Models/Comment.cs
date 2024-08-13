@@ -17,7 +17,7 @@ namespace IS.Domain.Models
         public int Likes { get; set; } // Number of likes received for the comment
         public int Dislikes { get; set; } // Number of dislikes received for the comment
         public Post Post { get; set; }
-        public ICollection<Reply> Replies { get; set; } // All the replies to this comment
+       // public ICollection<Reply> Replies { get; set; } // All the replies to this comment
     }
 
 }
